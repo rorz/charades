@@ -27,7 +27,10 @@ function getRandomInt(min, max) {
 class CharadeTitle extends Component {
     render() {
         return(
-            <h1>{this.props.title}</h1>
+            <div>
+                <h1>{this.props.title}</h1>
+                <h3>1993</h3>
+            </div>
         );
     }
 };
@@ -75,8 +78,10 @@ class Timer extends Component {
 
         if (seconds < 0) {
             color = "#44BA84";
-        } else if (seconds >= 50) {
+        } else if (seconds >= 60) {
             color = "#E22218";
+        } else if (seconds >= 50) {
+            color = "#F38F3D";
         }
 
         const timerStyle = {
