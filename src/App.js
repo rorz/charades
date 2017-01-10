@@ -29,7 +29,6 @@ class CharadeTitle extends Component {
         return(
             <div>
                 <h1>{this.props.title}</h1>
-                <h3>1993</h3>
             </div>
         );
     }
