@@ -36,13 +36,98 @@ class TeamChooser extends Component {
 
     newTeam() {
         const teamName = generateName() + 's'; // Doesn't normally pluralise
-        console.log(teamName)
+        const team = {
+            name: teamName,
+            members: [],
+        }
+
+        const newTeams = [...this.state.teams, team]
+        this.setState({
+            teams: newTeams
+        })
+    }
+
+    removeTeamAtIndex(index) {
+        console.log('team index: %s', index)
+
+        let newTeams = [...this.state.teams]
+        newTeams.splice(index, 1)
+
+        this.setState({
+            teams: newTeams
+        })
+    }
+
+    updateInputFieldAtIndex(index, event) {
+        let newTeams = [...this.state.teams]
+        newTeams[index]['inputField'] = event.target.value
+
+        this.setState({
+            teams: newTeams
+        })
+    }
+
+    addMemberToTeamAtIndex(index) {
+        let newTeams = [...this.state.teams]
+        let team = newTeams[index]
+
+        team['members'].push(team['inputField'])
+        team['inputField'] = ''
+
+        this.setState({
+            teams: newTeams
+        })
+    }
+
+    removeMemberFromTeamAtIndex(memberIndex, teamIndex) {
+
+
+        let newTeams = [...this.state.teams]
+        let team = newTeams[teamIndex]
+
+        team['members'].splice(memberIndex, 1)
+
+        this.setState({
+            teams: newTeams
+        })
     }
 
     render() {
+
+        const teams = this.state.teams.map((team) => {
+
+            const teamIndex = this.state.teams.indexOf(team)
+
+            const members = team.members.map((member) => {
+
+                const memberIndex = team.members.indexOf(member)
+
+                return (
+                    <ol>
+                        <li>
+                            {member}
+                            <button onClick={() => this.removeMemberFromTeamAtIndex(memberIndex, teamIndex)}>Remove Member</button>
+                        </li>
+                    </ol>
+                )
+            })
+
+            return (
+                <div>
+                    <h3>{team.name}</h3><button onClick={() => this.removeTeamAtIndex(teamIndex)}>Remove Team</button>
+                    <br />
+                    {members}
+                    <input type="text" placeholder="Member Name" onChange={(event) => this.updateInputFieldAtIndex(teamIndex, event)} value={team.inputField} />
+                    <button onClick={() => this.addMemberToTeamAtIndex(teamIndex)}>Add Member</button>
+                    <hr />
+                </div>
+            )
+        })
+
         return(
             <div>
                 <h2>Choose Teams</h2>
+                {teams}
                 <button onClick={() => this.newTeam()}>New Team</button>
             </div>
         )
